@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
+
 import { NavController } from 'ionic-angular';
 import { ItemPage } from '../item/item';
 
@@ -9,10 +12,16 @@ import { ItemPage } from '../item/item';
 })
 export class HomePage {
 
+  movies : any;
 
-
-  constructor(public navCtrl: NavController) {
-    
+  constructor(public navCtrl: NavController, public http: Http) {
+    let url = "https://www.reddit.com/r/gifs/new/.json?limit=10";
+    this.http.get(url)
+    .map(res => res.json())
+    .subscribe(data => {
+      this.movies = data.data.children;
+      console.log(data);
+    })
   }
 
   data = [
